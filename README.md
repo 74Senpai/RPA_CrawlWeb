@@ -11,35 +11,35 @@ version 1.0.0
 
 ## 2. Cấu hình
 ### Tìm kiếm 
-    Tìm kiếm theo các lựa chọn có sẵn trên trang chủ của web
-    VD: Loại tin 
-    ```.env 
-        TYPE_POST = Loại cần tìm 
-    ```
-    Tương tự với các lựa chọn khác: 
-    ``` .env
-        PROVINCE =  Đà Nẵng 
-        PROPERTY_TYPE = Nhà
-        TYPE_POST = Cần bán
-        DIRECTION = 
-        SQUARE = 
-        PRICE = 
-        DISTRICT = 
-    ```
-    * Tất cả các lựa chọn phải đúng theo tên hiển trên các thẻ lựa chọn của trang, trường hơp để trống sẽ được hiểu là tất cả  *
+Tìm kiếm theo các lựa chọn có sẵn trên trang chủ của web
+VD: Loại tin 
+```.env 
+    TYPE_POST = Loại cần tìm 
+```
+Tương tự với các lựa chọn khác: 
+``` .env
+    PROVINCE =  Đà Nẵng 
+    PROPERTY_TYPE = Nhà
+    TYPE_POST = Cần bán
+    DIRECTION = 
+    SQUARE = 
+    PRICE = 
+    DISTRICT = 
+```
+* Tất cả các lựa chọn phải đúng theo tên hiển trên các thẻ lựa chọn của trang, trường hơp để trống sẽ được hiểu là tất cả  *
 
 ### Gửi mail 
-    Tự động gửi mail thông báo trạng thái thành công hoặc thất bại của lần crawl 
-    - Bật/Tắt gửi mail thông báo :
-    ``` .env
-        IS_AUTO_SEND_MAIL = True/False
-    ```
-    - Cấu hình để gửi mail :
-    ``` .env
-        APP_PASSWORD = you app password
-        SENDER_EMAIL = you email 
-        RECIEVER = receiver email 
-    ```
+Tự động gửi mail thông báo trạng thái thành công hoặc thất bại của lần crawl 
+- Bật/Tắt gửi mail thông báo :
+``` .env
+    IS_AUTO_SEND_MAIL = True/False
+```
+- Cấu hình để gửi mail :
+``` .env
+APP_PASSWORD = you app password
+SENDER_EMAIL = you email 
+RECIEVER = receiver email 
+```
 
 ### Lưu file kết quả 
 Chọn thư mục muốn lưu file kết quả và tên file muốn lưu
