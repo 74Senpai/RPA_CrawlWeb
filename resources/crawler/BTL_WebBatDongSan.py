@@ -200,11 +200,12 @@ class CrawlAloNhaDat:
 
         body = "Crawl successfull with "+str(i)+" page" if isSuccess else "Crawl fail, Please check you file name , directory"
         if self.IS_AUTO_SEND_MAIL :
-                    autoSendMail.send_email( sender=self.SENDER_EMAIL,
-                                            subject= "Crawl_data AloNhaDat",
-                                            body=body,
-                                            password=self.APP_PASSWORD,
-                                            receiver=self.RECEIVER_EMAIL)
+            if self.SENDER_EMAIL != "" and self.APP_PASSWORD != "" and self.RECEIVER_EMAIL !="": 
+                autoSendMail.send_email( sender=self.SENDER_EMAIL,
+                                        subject= "Crawl_data AloNhaDat",
+                                        body=body,
+                                        password=self.APP_PASSWORD,
+                                        receiver=self.RECEIVER_EMAIL)
     def end_task(self):
         self.driver.close()
 
