@@ -51,12 +51,12 @@ Sau khi thực hiện thành công, dữ liệu sẽ được lưu ở đường
 
 ### Cấu hình Crawl 
 - Đợi trang load, phụ thuộc và tốc độ mạng của bạn để tải xong trang web  
-    TIME_WAIT_PAGE_LOAD =3 
+    `TIME_WAIT_PAGE_LOAD =3 `
 - Nghỉ trước khi đi sang trang tiếp theo, làm chậm lại thao tác, hạn chế gửi nhiều request tới trang web tránh bị chặn
-    SLEEP_BEFOR_GO_NEXT_PAGE =5
+    `SLEEP_BEFOR_GO_NEXT_PAGE =5`
 - Lấy đoạn mô tả chi tiết bằng thbuw viện beatifull soup, nếu bật, quá trình crawl sẽ gửi nhiều request hơn, dễ bị chặn hơn, để bổ trợ cho nó, thời gian chờ lấy mô tả được dùng để làm chậm quá trình gửi request, chi hoạt động khi lấy mô tả chi tiết được bật
-    IS_GET_SUMMARY_DETAIL =False  
-    TIME_WAIT_GET_SUMMARY =1   
+    `IS_GET_SUMMARY_DETAIL =False  `
+   ` TIME_WAIT_GET_SUMMARY =1   `
 
 - Tổng số trang muốn crawl dữ liệu, khi đặt thành -1, dữ liệu sẽ được lấy tới khi hết hoặc bị chặn 
     TOTAL_PAGE_CRAWL = 3 
