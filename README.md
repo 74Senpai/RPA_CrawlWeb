@@ -60,7 +60,22 @@ Sau khi thực hiện thành công, dữ liệu sẽ được lưu ở đường
 
 - Tổng số trang muốn crawl dữ liệu, khi đặt thành -1, dữ liệu sẽ được lấy tới khi hết hoặc bị chặn 
     TOTAL_PAGE_CRAWL = 3 
-        
+
+## 3. Cài đặt 
+### Tải code:
+```
+    git clone https://github.com/74Senpai/RPA_CrawlWeb.git
+```
+### Thư viện:
+```cmd 
+    pip install -r requirements.txt
+```
+
+## 4. Chạy chương trình 
+```cmd
+    py main.py
+```
+
 ### Các thông số  tìm kiếm có thể dùng đến hiện tại ( Chỉ dùng key )
 ``` py
 dict_select_option_data = {
