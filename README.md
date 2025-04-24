@@ -59,7 +59,7 @@ Sau khi thực hiện thành công, dữ liệu sẽ được lưu ở đường
    ` TIME_WAIT_GET_SUMMARY =1   `
 
 - Tổng số trang muốn crawl dữ liệu, khi đặt thành -1, dữ liệu sẽ được lấy tới khi hết hoặc bị chặn 
-    TOTAL_PAGE_CRAWL = 3 
+    `TOTAL_PAGE_CRAWL = 3 `
 
 ## 3. Cài đặt 
 ### Tải code:
