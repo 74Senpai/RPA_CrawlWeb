@@ -51,8 +51,8 @@ Sau khi thực hiện thành công, dữ liệu sẽ được lưu ở đường
 
 ### Cấu hình Crawl 
 - Đợi trang load, phụ thuộc và tốc độ mạng của bạn để tải xong trang web  
-    TIME_WAIT_PAGE_LOAD =3 
-- Nghỉ trước khi đi sang trang tiếp theo, làm chậm lại thao tác, hạn chế gửi nhiều request tới trang web tránh bị chặn
+    TIME_WAIT_PAGE_LOAD =5 
+- Nghỉ trước khi đi sang trang tiếp theo, làm chậm lại thao tác, hạn chế gửi nhiều request tới trang web tránh bị chặn quá sớm 
     SLEEP_BEFOR_GO_NEXT_PAGE =5
 - Lấy đoạn mô tả chi tiết bằng thbuw viện beatifull soup, nếu bật, quá trình crawl sẽ gửi nhiều request hơn, dễ bị chặn hơn, để bổ trợ cho nó, thời gian chờ lấy mô tả được dùng để làm chậm quá trình gửi request, chi hoạt động khi lấy mô tả chi tiết được bật
     IS_GET_SUMMARY_DETAIL =False  
@@ -123,3 +123,13 @@ dict_select_option_data = {
     - Có app password cho tính năng tự động gửi email  
 
 
+#### Giải đáp 
+- Tại sao lại bị chặn ?
+    + Có thể do server web phát hiện spam request gây quá tải hệ thống (DDOS) nên tiến hành chặn.
+        *Giải pháp đề xuất là chỉ gửi request mỗi giây một lần hoặc vài giây một lần*
+    + Có thể do trang web có cơ chế phát hiện BOT qua thao tác với giao diện.
+        *Giải pháp đề xuất là làm giả các thao tác như cuộn, di chuyển chuột,... để giả hành vi người dùng*
+    + Có thể do trang web phát hiện trình duyệt không có dữ liệu người dùng 
+    + Có thể do trang web giới hạn số lượng mỗi IP có thể gửi request trong một khoảng thời gian nhất định 
+        *Giải pháp đề xuất là chia nhỏ số lượng mỗi lần chạy hoặc chia ra nhiều luồng chạy vào các thời gian khác nhau*
+        *Giải pháp khác là đổi địa chỉ IP sau số request nhất định*
