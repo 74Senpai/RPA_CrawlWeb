@@ -204,7 +204,7 @@ class CrawlAloNhaDat:
             print("Crawl break by error")
             self.message += "\n Some error while crawl !!!"
         finally:
-            self.message += "Carwl successfully which "+i+" page \n"
+            self.message += "Carwl successfully which "+str(i)+" page \n"
             print("Crawl successfull")
 
     #Click next page function 

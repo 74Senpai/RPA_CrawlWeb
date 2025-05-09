@@ -2,3 +2,4 @@
 !example.env
 *_pycache_
 *.xlsx
+*.pyc
