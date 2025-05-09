@@ -25,8 +25,9 @@ def start_crawl_data():
     finally:
         print("Run task complete ")
 
-schedule.every().day.at("06:00").do(start_crawl_data)
-while True:
-    schedule.run_pending()
-    time.sleep(25)
+# schedule.every().day.at("06:00").do(start_crawl_data)
+# while True:
+#     schedule.run_pending()
+#     time.sleep(25)
     
+start_crawl_data()

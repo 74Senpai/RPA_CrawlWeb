@@ -35,6 +35,7 @@ class CrawlAloNhaDat:
         self.TOTAL_PAGE_CRAWL = os.getenv("TOTAL_PAGE_CRAWL")
 
         #Email cònig
+        self.message = ""
         self.IS_AUTO_SEND_MAIL = os.getenv("IS_AUTO_SEND_MAIL").lower() == "true"
         self.SENDER_EMAIL = os.getenv("SENDER_EMAIL")
         self.APP_PASSWORD = os.getenv("APP_PASSWORD")
@@ -46,27 +47,32 @@ class CrawlAloNhaDat:
 
         self.data = []
 
+    # Mo trinh duyet
     def start_crawl(self):
         self.driver = webdriver.Chrome()
         self.driver.get(self.PAGE_URL)
         time.sleep(int(self.TIME_WAIT_PAGE_LOAD))
 
+    # Lay value cua option the select bang ten
     def get_value_by_key_name(self, selected_site, key_name):
         current_site_option = dict_select_option_data[selected_site]
         return current_site_option[key_name]
 
+    # Chon option trong select tag bang gia tri
     def chose_option_by_element_value(self, options, value):
         for option in options:
             if option.get_attribute("value") == value:
                 option.click()
                 break
-
+    
+    # Chon option trong select tag bang gia tri text
     def chose_option_by_element_text(self, options, text):
         for option in options:
             if option.text == text:
                 option.click()
                 break
-
+    
+    # Chon select tag
     def click_selected_tag(self, xpath, chose_value, type_select):
         selected_tag = self.driver.find_element(By.XPATH, xpath)
         selected_tag.click()
@@ -75,7 +81,8 @@ class CrawlAloNhaDat:
             self.chose_option_by_element_value(options=options_selected_tag, value=chose_value) 
         else:
             self.chose_option_by_element_text(options=options_selected_tag, text=chose_value)
-    
+        
+    # Chon cac option de tim kiem
     def chose_type_data_to_find(self, province , property_type , 
                             type_post , direction , square , price, district ):
         # Chon tinh 
@@ -119,6 +126,7 @@ class CrawlAloNhaDat:
         time.sleep(int(self.TIME_WAIT_PAGE_LOAD))
         self.crawl_data()
     
+    # Kiem tra mot phan tu co ton tai trong item khong
     def check_element_exist_in_item(self, item, find_method, elementClass):
         try:
             item.find_element(find_method, elementClass)
@@ -126,6 +134,7 @@ class CrawlAloNhaDat:
         except:
             return False
 
+    # Lay mo ta cua bai dang bang BS4 
     def lay_mot_ta_chi_tiet(self, href_page , default_sum ):
         response = requests.get(href_page)
         if response.status_code == 200:
@@ -136,35 +145,45 @@ class CrawlAloNhaDat:
             except:
                 return default_sum
 
+    # Lay thong tin cua cac nha trong trang  
     def get_infor_house( self ):
         try:
             element_content_items = self.driver.find_elements(By.XPATH, '//*[@id="left"]/div[1]/div[*]')
-
             for item in element_content_items:
-                element_title = item.find_element(By.CLASS_NAME, 'ct_title').text
-                if self.IS_GET_SUMMARY_DETAIL:
-                    element_sum = self.lay_mot_ta_chi_tiet(item.find_element(By.TAG_NAME, 'a').get_attribute("href"),  item.find_element(By.CLASS_NAME, 'ct_brief').text)
-                    time.sleep(int(self.TIME_WAIT_GET_SUMMARY))
-                else:
-                    element_sum = item.find_element(By.CLASS_NAME, 'ct_brief').text
-                element_road = item.find_element(By.CLASS_NAME, 'road-width').text if self.check_element_exist_in_item(item, By.CLASS_NAME, 'road-width') else "Null"
-                element_floor = item.find_element(By.CLASS_NAME, 'floors').text if self.check_element_exist_in_item(item, By.CLASS_NAME, 'floors') else "Null"
-                element_bedroom = item.find_element(By.CLASS_NAME, 'bedroom').text if self.check_element_exist_in_item(item, By.CLASS_NAME, 'bedroom') else "Null"
-                element_dientich = item.find_element(By.CLASS_NAME, 'ct_dt').text 
-                element_gia = item.find_element(By.CLASS_NAME, 'ct_price').text
-                element_vitri = item.find_element(By.CLASS_NAME, 'ct_dis').text
-                nha_infor = [element_title, 
-                            element_sum,
-                            element_road, 
-                            element_floor, 
-                            element_bedroom,
-                            element_dientich, 
-                            element_gia, 
-                            element_vitri]
-                self.data.append(nha_infor)
+                self.get_house_infor(item=item)
         except:
-            return
+            print("A Page have no post")
+        
+    #Lay thong tin nha cua bai dang
+    def get_house_infor(self, item):
+        try:
+            element_title = item.find_element(By.CLASS_NAME, 'ct_title').text
+            if self.IS_GET_SUMMARY_DETAIL:
+                element_sum = self.lay_mot_ta_chi_tiet(item.find_element(By.TAG_NAME, 'a').get_attribute("href"),  item.find_element(By.CLASS_NAME, 'ct_brief').text)
+                time.sleep(int(self.TIME_WAIT_GET_SUMMARY))
+            else:
+                element_sum = item.find_element(By.CLASS_NAME, 'ct_brief').text
 
+            element_road = item.find_element(By.CLASS_NAME, 'road-width').text if self.check_element_exist_in_item(item, By.CLASS_NAME, 'road-width') else "Null"
+            element_floor = item.find_element(By.CLASS_NAME, 'floors').text if self.check_element_exist_in_item(item, By.CLASS_NAME, 'floors') else "Null"
+            element_bedroom = item.find_element(By.CLASS_NAME, 'bedroom').text if self.check_element_exist_in_item(item, By.CLASS_NAME, 'bedroom') else "Null"
+            element_dientich = item.find_element(By.CLASS_NAME, 'ct_dt').text 
+            element_gia = item.find_element(By.CLASS_NAME, 'ct_price').text
+            element_vitri = item.find_element(By.CLASS_NAME, 'ct_dis').text
+
+            nha_infor = [element_title, 
+                        element_sum,
+                        element_road, 
+                        element_floor, 
+                        element_bedroom,
+                        element_dientich, 
+                        element_gia, 
+                        element_vitri]
+            self.data.append(nha_infor)
+        except:
+            print("A item "+item+" invalid ")
+
+    # Tien hanh cao du lieu 
     def crawl_data(self):
         try:
             i = 1
@@ -172,42 +191,57 @@ class CrawlAloNhaDat:
             while isActive:
                 self.get_infor_house()
                 i = i + 1
-                isActive = True if int(self.TOTAL_PAGE_CRAWL) != i else False
-                elements_page_btn = self.driver.find_elements(By.XPATH, f'//*[@id="left"]/div[2]/a')
-                if len(elements_page_btn) == 0:
-                    isActive = False
-                else:
-                    for element in elements_page_btn:
-                        loop_count = 1
-                        if element.text == str(i):
-                            element.click()
-                            break
-                        elif loop_count == elements_page_btn.count:
-                            isActive = False
-                        loop_count += 1
+                isActive = self.click_next_page(next_page=i)
+                isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
                 time.sleep(int(self.SLEEP_BEFOR_GO_NEXT_PAGE))
-
+            self.message = "Carwl successfully which "+i+" page"
+        except:
+            print("Crawl break by error")
+            self.message = "Some error while crawl !!!"
         finally:
-            isSuccess = False
-            try:
-                df = pd.DataFrame(self.data, columns=["title", "mo ta", "road", "floor", "bedroom", "dientich", "gia", "vitri"])
-                today = date.today()
-                df.to_excel(self.SAVE_DATA_DIR+self.FILE_NAME+"-"+str(today)+".xlsx")
-                isSuccess = True   
-            except:
-                isSuccess = False
-                print("Error while save data")
+                print("Crawl successfull")
+                self.end_task()
 
-        body = "Crawl successfull with "+str(i)+" page" if isSuccess else "Crawl fail, Please check you file name , directory"
+    #Click next page function 
+    def click_next_page(self, next_page):
+        elements_page_btn = self.driver.find_elements(By.XPATH, f'//*[@id="left"]/div[2]/a')
+        if len(elements_page_btn) == 0:
+            return False
+        else:
+            for element in elements_page_btn:
+                if element.text == str(next_page):
+                    element.click()
+                    return True
+            return False
+                
+    # Luu thong tin crawl vao Excel         
+    def save_data_to_excel(self):
+        try:
+            df = pd.DataFrame(self.data, columns=["title", "mo ta", "road", "floor", "bedroom", "dientich", "gia", "vitri"])
+            today = date.today()
+            df.to_excel(self.SAVE_DATA_DIR+self.FILE_NAME+"-"+str(today)+".xlsx")
+            self.message = "Save data to excel successfull" + self.message
+            return True   
+        except:
+            print("Error while save data")
+            self.message = "Failed when save data to excel, please check file name config, file directory config !!!"
+            return False
+
+    # Auto send mail
+    def send_mail_crawl_state(self):
         if self.IS_AUTO_SEND_MAIL :
             if self.SENDER_EMAIL != "" and self.APP_PASSWORD != "" and self.RECEIVER_EMAIL !="": 
                 autoSendMail.send_email( sender=self.SENDER_EMAIL,
                                         subject= "Crawl_data AloNhaDat",
-                                        body=body,
+                                        body=self.message,
                                         password=self.APP_PASSWORD,
                                         receiver=self.RECEIVER_EMAIL)
+    
+    # Ket thuc crawl
     def end_task(self):
         self.driver.close()
+        self.save_data_to_excel()
+        self.send_mail_crawl_state()
 
 
 
