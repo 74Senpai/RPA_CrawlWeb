@@ -36,7 +36,6 @@ class CrawlAloNhaDat:
 
         #Email cònig
         self.message = ""
-        self.IS_AUTO_SEND_MAIL = os.getenv("IS_AUTO_SEND_MAIL").lower() == "true"
         self.SENDER_EMAIL = os.getenv("SENDER_EMAIL")
         self.APP_PASSWORD = os.getenv("APP_PASSWORD")
         self.RECEIVER_EMAIL = os.getenv("RECIEVER") 
@@ -124,7 +123,6 @@ class CrawlAloNhaDat:
         button_seearch = self.driver.find_element(By.XPATH, '//*[@id="ctl00_content_pc_content"]/div[1]/div[1]/table/tbody/tr[6]/td/div/div[1]')
         button_seearch.click()
         time.sleep(int(self.TIME_WAIT_PAGE_LOAD))
-        self.crawl_data()
     
     # Kiem tra mot phan tu co ton tai trong item khong
     def check_element_exist_in_item(self, item, find_method, elementClass):
@@ -145,14 +143,21 @@ class CrawlAloNhaDat:
             except:
                 return default_sum
 
-    # Lay thong tin cua cac nha trong trang  
-    def get_infor_house( self ):
+    # Lay thong tin cac nha trong danh sach bai viet 
+    def get_list_house_infor(self, list_post):
+        if list_post == None:
+            return
+        for item in list_post:
+            self.get_house_infor(item=item)
+
+    # Lay thong tin bai viet cua cac nha trong trang  
+    def get_house_infor_posts( self ):
         try:
             element_content_items = self.driver.find_elements(By.XPATH, '//*[@id="left"]/div[1]/div[*]')
-            for item in element_content_items:
-                self.get_house_infor(item=item)
+            return element_content_items
         except:
             print("A Page have no post")
+            return None
         
     #Lay thong tin nha cua bai dang
     def get_house_infor(self, item):
@@ -189,7 +194,7 @@ class CrawlAloNhaDat:
             i = 1
             isActive = True
             while isActive:
-                self.get_infor_house()
+                self.get_list_house_infor(self.get_house_infor_posts())
                 i = i + 1
                 isActive = self.click_next_page(next_page=i)
                 isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
@@ -200,7 +205,6 @@ class CrawlAloNhaDat:
             self.message = "Some error while crawl !!!"
         finally:
                 print("Crawl successfull")
-                self.end_task()
 
     #Click next page function 
     def click_next_page(self, next_page):
@@ -229,7 +233,6 @@ class CrawlAloNhaDat:
 
     # Auto send mail
     def send_mail_crawl_state(self):
-        if self.IS_AUTO_SEND_MAIL :
             if self.SENDER_EMAIL != "" and self.APP_PASSWORD != "" and self.RECEIVER_EMAIL !="": 
                 autoSendMail.send_email( sender=self.SENDER_EMAIL,
                                         subject= "Crawl_data AloNhaDat",
@@ -240,8 +243,6 @@ class CrawlAloNhaDat:
     # Ket thuc crawl
     def end_task(self):
         self.driver.close()
-        self.save_data_to_excel()
-        self.send_mail_crawl_state()
 
 
 
