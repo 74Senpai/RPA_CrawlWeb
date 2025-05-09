@@ -199,7 +199,6 @@ class CrawlAloNhaDat:
                 isActive = self.click_next_page(next_page=i)
                 isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
                 time.sleep(int(self.SLEEP_BEFOR_GO_NEXT_PAGE))
-            
         except:
             print("Crawl break by error")
             self.message += "\n Some error while crawl !!!"
@@ -225,7 +224,7 @@ class CrawlAloNhaDat:
             df = pd.DataFrame(self.data, columns=["title", "mo ta", "road", "floor", "bedroom", "dientich", "gia", "vitri"])
             today = date.today()
             df.to_excel(self.SAVE_DATA_DIR+self.FILE_NAME+"-"+str(today)+".xlsx")
-            self.message = "Save data to excel successfull" + self.message
+            self.message = "Save data to excel successfull \n" + self.message
             return True   
         except:
             print("Error while save data")
