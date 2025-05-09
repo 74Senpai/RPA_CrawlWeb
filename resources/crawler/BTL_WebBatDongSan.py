@@ -214,9 +214,9 @@ class CrawlAloNhaDat:
                 time.sleep(int(self.SLEEP_BEFOR_GO_NEXT_PAGE))
         except:
             print("Crawl break by error")
-            self.message += "\n Some error while crawl !!!"
+            self.message = "\n Some error while crawl !!!"
         finally:
-            self.message += "Carwl successfully which "+str(i)+" page \n"
+            self.message += "Carwl successfully which "+str(len(self.data))+" house infor \n"
             print("Crawl successfull")
 
     #Click next page function 
