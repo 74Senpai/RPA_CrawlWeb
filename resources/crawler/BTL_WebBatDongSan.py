@@ -199,12 +199,13 @@ class CrawlAloNhaDat:
                 isActive = self.click_next_page(next_page=i)
                 isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
                 time.sleep(int(self.SLEEP_BEFOR_GO_NEXT_PAGE))
-            self.message = "Carwl successfully which "+i+" page"
+            
         except:
             print("Crawl break by error")
-            self.message = "Some error while crawl !!!"
+            self.message += "\n Some error while crawl !!!"
         finally:
-                print("Crawl successfull")
+            self.message += "Carwl successfully which "+i+" page \n"
+            print("Crawl successfull")
 
     #Click next page function 
     def click_next_page(self, next_page):
