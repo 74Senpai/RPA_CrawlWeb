@@ -12,6 +12,7 @@ Khai báo `CrawlAloNhat()` để sử dụng các chức năng của lớp
         crawl_data = CrawlAloNhaDat()
         crawl_data.start_crawl()
         crawl_data.chose_type_data_to_find(province, property_type, direction, district, price, square, type_post)
+        crawl_data.click_search_button()
         crawl_data.crawl_data()
         crawl_data.save_data_to_excel()
         crawl_data.end_task()

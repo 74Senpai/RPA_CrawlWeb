@@ -21,6 +21,7 @@ def start_crawl_data():
         crawl_data.start_crawl()
         crawl_data.chose_type_data_to_find(province=PROVINCE, property_type=PROPERTY_TYPE,direction=DIRECTION,
                             district=DISTRICT, price=PRICE, square=SQUARE, type_post=TYPE_POST )
+        crawl_data.click_search_button()
         crawl_data.crawl_data()
         crawl_data.save_data_to_excel()
         crawl_data.end_task()
@@ -29,8 +30,7 @@ def start_crawl_data():
     finally:
         print("Run task complete ")
 
-start_crawl_data()
-# schedule.every().day.at("06:00").do(start_crawl_data)
-# while True:
-#     schedule.run_pending()
-#     time.sleep(25)
+schedule.every().day.at("06:00").do(start_crawl_data)
+while True:
+    schedule.run_pending()
+    time.sleep(25)

@@ -73,13 +73,17 @@ class CrawlAloNhaDat:
     
     # Chon select tag
     def click_selected_tag(self, xpath, chose_value, type_select):
-        selected_tag = self.driver.find_element(By.XPATH, xpath)
-        selected_tag.click()
-        options_selected_tag = selected_tag.find_elements(By.TAG_NAME, 'option')
-        if type_select == "value":
-            self.chose_option_by_element_value(options=options_selected_tag, value=chose_value) 
-        else:
-            self.chose_option_by_element_text(options=options_selected_tag, text=chose_value)
+        try:
+            selected_tag = self.driver.find_element(By.XPATH, xpath)
+            selected_tag.click()
+            options_selected_tag = selected_tag.find_elements(By.TAG_NAME, 'option')
+            if type_select == "value":
+                self.chose_option_by_element_value(options=options_selected_tag, value=chose_value) 
+            else:
+                self.chose_option_by_element_text(options=options_selected_tag, text=chose_value)
+        except:
+            self.message = "Cant find select tag in web to selected option to crawl ! \n"
+            print("No such select tag to click")
         
     # Chon cac option de tim kiem
     def chose_type_data_to_find(self, province , property_type , 
@@ -120,10 +124,16 @@ class CrawlAloNhaDat:
             self.click_selected_tag('//*[@id="ctl00_content_pc_content"]/div[1]/div[1]/table/tbody/tr[3]/td[4]/select', 
                         district, type_select="text")
         
-        button_seearch = self.driver.find_element(By.XPATH, '//*[@id="ctl00_content_pc_content"]/div[1]/div[1]/table/tbody/tr[6]/td/div/div[1]')
-        button_seearch.click()
-        time.sleep(int(self.TIME_WAIT_PAGE_LOAD))
-    
+    # Click nut tim kiem
+    def click_search_button(self):
+        try:
+            button_seearch = self.driver.find_element(By.XPATH, '//*[@id="ctl00_content_pc_content"]/div[1]/div[1]/table/tbody/tr[6]/td/div/div[1]')
+            button_seearch.click()
+            time.sleep(int(self.TIME_WAIT_PAGE_LOAD))
+        except:
+            self.message += "Cant click search button to find data !!! \n"
+            print("No such find button to click !!!")
+
     # Kiem tra mot phan tu co ton tai trong item khong
     def check_element_exist_in_item(self, item, find_method, elementClass):
         try:
@@ -145,7 +155,9 @@ class CrawlAloNhaDat:
 
     # Lay thong tin cac nha trong danh sach bai viet 
     def get_list_house_infor(self, list_post):
-        if list_post == None:
+        if list_post == None or len(list_post) == 0:
+            self.message += "Page have no post, this can be block by capcha or other issu !!! \n"
+            print("List is None or Null")
             return False
         for item in list_post:
             self.get_house_infor(item=item)
@@ -195,10 +207,10 @@ class CrawlAloNhaDat:
             i = 1
             isActive = True
             while isActive:
+                isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
                 isActive = self.get_list_house_infor(self.get_house_infor_posts())
                 i = i + 1
                 self.click_next_page(next_page=i)
-                isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
                 time.sleep(int(self.SLEEP_BEFOR_GO_NEXT_PAGE))
         except:
             print("Crawl break by error")
@@ -225,11 +237,11 @@ class CrawlAloNhaDat:
             df = pd.DataFrame(self.data, columns=["title", "mo ta", "road", "floor", "bedroom", "dientich", "gia", "vitri"])
             today = date.today()
             df.to_excel(self.SAVE_DATA_DIR+self.FILE_NAME+"-"+str(today)+".xlsx")
-            self.message = "Save data to excel successfull \n" + self.message
+            self.message += "Save data to excel successfull \n" + self.message
             return True   
         except:
             print("Error while save data")
-            self.message = "Failed when save data to excel, please check file name config, file directory config !!!"
+            self.message += "Failed when save data to excel, please check file name config, file directory config !!! \n"
             return False
 
     # Auto send mail
