@@ -1,5 +1,5 @@
 # Crawl data Web Bất Động Sản tự động
-version 1.0.0
+version 1.0.2
 
 ## 1. Chức năng
 - Truy cập vào trang web theo url có sẵn
@@ -30,9 +30,6 @@ Tương tự với các lựa chọn khác:
 
 ### Gửi mail 
 Tự động gửi mail thông báo trạng thái thành công hoặc thất bại của lần crawl 
-- Bật/Tắt gửi mail thông báo :
-``` .env
-    IS_AUTO_SEND_MAIL = True/False
 ```
 - Cấu hình để gửi mail :
 ``` .env
@@ -40,6 +37,7 @@ APP_PASSWORD = you app password
 SENDER_EMAIL = you email 
 RECIEVER = receiver email 
 ```
+*`Lưu ý`: nếu để trống 1 trong 3 giá trị trên hoặc cả 3 giá trị trên, email sẽ không được gửi khi được gọi* 
 
 ### Lưu file kết quả 
 Chọn thư mục muốn lưu file kết quả và tên file muốn lưu
