@@ -146,9 +146,10 @@ class CrawlAloNhaDat:
     # Lay thong tin cac nha trong danh sach bai viet 
     def get_list_house_infor(self, list_post):
         if list_post == None:
-            return
+            return False
         for item in list_post:
             self.get_house_infor(item=item)
+        return True
 
     # Lay thong tin bai viet cua cac nha trong trang  
     def get_house_infor_posts( self ):
@@ -194,9 +195,9 @@ class CrawlAloNhaDat:
             i = 1
             isActive = True
             while isActive:
-                self.get_list_house_infor(self.get_house_infor_posts())
+                isActive = self.get_list_house_infor(self.get_house_infor_posts())
                 i = i + 1
-                isActive = self.click_next_page(next_page=i)
+                self.click_next_page(next_page=i)
                 isActive = True if i != int(self.TOTAL_PAGE_CRAWL) else False
                 time.sleep(int(self.SLEEP_BEFOR_GO_NEXT_PAGE))
         except:
