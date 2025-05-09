@@ -47,6 +47,9 @@ Các logic tuy biến phải nằm trong phạm vi giữa `start_crawl` đến `
     + `type_post`: thể loại bài đăng
 - xem thêm **các giá trị có thể chọn**
 
+### click_search_button
+`click_search_button` : đúng như tên gọi, hàm này có chức năng nhấn vào nút tìm kiếm
+
 ### crawl_data
 `crawl_data` là lõi của chương trình, nó gọi tới các phương thức khác của lớp `CrawlAloNhaDat` để thực hiện công việc chính của lớp `CrawlAloNhaDat`, nó thông báo trạng thái và thực hiện các.
 
